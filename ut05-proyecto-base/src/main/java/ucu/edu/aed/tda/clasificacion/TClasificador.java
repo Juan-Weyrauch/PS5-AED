@@ -18,25 +18,7 @@ public abstract class TClasificador {
     public abstract void burbuja(int[] datos);
 
 
-    public void quicksort(int[] datos) {
-        quicksort(datos, 0, datos.length - 1);
-    }
-
-    /**
-     * método recursivo de quicksort
-     */
-    private void quicksort(int[] datos, int i, int j) {
-        if (i <= j) {
-            int indicePivote = obtenerPivote(datos, i, j);
-            // debe ser un rango válido
-            if (indicePivote >= i && indicePivote < j) {
-                int pivote = datos[indicePivote];
-                int k = particion(datos, i, j, pivote);
-                quicksort(datos, i, k - 1);
-                quicksort(datos, k, j);
-            }
-        }
-    }
+    public abstract void quicksort(int[] datos);
 
     /**
      * método auxiliar y utilizado en quicksort

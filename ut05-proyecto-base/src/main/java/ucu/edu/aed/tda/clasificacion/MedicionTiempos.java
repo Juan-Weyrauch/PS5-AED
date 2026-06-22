@@ -9,9 +9,9 @@ public class MedicionTiempos {
         Integer[] incrementos = { 5, 3, 1 };
 
         // Vectores grandes (32000) de cada tipo, generados una sola vez
-        int[] ascendente  = generador.generarDatosAscendentes();
+        int[] ascendente = generador.generarDatosAscendentes();
         int[] descendente = generador.generarDatosDescendentes();
-        int[] aleatorio   = generador.generarDatosAleatorios();
+        int[] aleatorio = generador.generarDatosAleatorios();
 
         int n = ascendente.length;
         System.out.println("Tamaño del vector: " + n + " elementos");
@@ -33,10 +33,15 @@ public class MedicionTiempos {
                 tiempoBurbuja(clasificador, ascendente),
                 tiempoBurbuja(clasificador, descendente),
                 tiempoBurbuja(clasificador, aleatorio));
+
+        System.out.printf("%-22s %12d %12d %12d%n", "Quicksort",
+                tiempoQuicksort(clasificador, ascendente),
+                tiempoQuicksort(clasificador, descendente),
+                tiempoQuicksort(clasificador, aleatorio));
     }
 
     static long tiempoInsercion(TClasificadorImp c, int[] base) {
-        int[] copia = base.clone();   // copia fresca: cada medición ordena el mismo dato original
+        int[] copia = base.clone(); // copia fresca: cada medición ordena el mismo dato original
         return c.medirTiempoDeEjecución(() -> c.insercionDirecta(copia));
     }
 
@@ -48,5 +53,10 @@ public class MedicionTiempos {
     static long tiempoBurbuja(TClasificadorImp c, int[] base) {
         int[] copia = base.clone();
         return c.medirTiempoDeEjecución(() -> c.burbuja(copia));
+    }
+
+    static long tiempoQuicksort(TClasificadorImp c, int[] base) {
+        int[] copia = base.clone();
+        return c.medirTiempoDeEjecución(() -> c.quicksort(copia));
     }
 }

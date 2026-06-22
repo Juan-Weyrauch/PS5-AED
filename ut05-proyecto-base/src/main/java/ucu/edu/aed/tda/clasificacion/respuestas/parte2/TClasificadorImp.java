@@ -1,8 +1,11 @@
 package ucu.edu.aed.tda.clasificacion.respuestas.parte2;
 
+import java.util.Random;
+
 import ucu.edu.aed.tda.clasificacion.TClasificador;
 
 public class TClasificadorImp extends TClasificador {
+    private final Random rand = new Random(); // se usa en obtener pivote. Para no hacer un nuevo elemento random por cada iteracion.
 
     @Override
     public void insercionDirecta(int[] datos) {
@@ -54,17 +57,50 @@ public class TClasificadorImp extends TClasificador {
         return true;
     }
 
+    @Override
+    public void quicksort(int[] datos) {
+        quicksort(datos, 0, datos.length - 1);
+    }
+
+    /**
+     * método recursivo de quicksort
+     */
+    private void quicksort(int[] datos, int low, int high) {
+        if (low < high) {
+            int indicePivote = obtenerPivote(datos, low, high); // deja el pivote en 'high' y devuelve ese índice
+            int pivote = datos[indicePivote];
+            int k = particion(datos, low, high, pivote); // Lomuto: deja el pivote en su lugar final 'k'
+            quicksort(datos, low, k - 1);
+            quicksort(datos, k + 1, high);
+        }
+    }
+
+    @Override
+    protected int obtenerPivote(int[] datos, int low, int high) {
+        int pivot = rand.nextInt(high - low + 1) + low; // índice al azar en [low, high]
+        intercambiar(datos, pivot, high); // muevo el pivote al final
+        return high; // devuelvo el ÍNDICE del pivote
+    }
+
+    @Override
+    protected int particion(int[] datos, int low, int high, int pivote) {
+        int i = (low - 1); // index of smaller element
+        for (int j = low; j < high; j++) {
+            if (datos[j] < pivote) {
+                i++;
+                intercambiar(datos, i, j);
+            }
+        }
+
+        // swap datos[i+1] and datos[high] (or pivot)
+        int temp = datos[i + 1];
+        datos[i + 1] = datos[high];
+        datos[high] = temp;
+
+        return i + 1;
+    }
+
     // para poder compilar.
-    @Override
-    protected int obtenerPivote(int[] datos, int i, int j) {
-        throw new UnsupportedOperationException("No usado en esta entrega");
-    }
-
-    @Override
-    protected int particion(int[] datos, int i, int j, int pivote) {
-        throw new UnsupportedOperationException("No usado en esta entrega");
-    }
-
     @Override
     public void clasificacionDirecta(int[] datos) {
         throw new UnsupportedOperationException("No usado en esta entrega");
